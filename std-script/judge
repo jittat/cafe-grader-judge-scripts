@@ -177,7 +177,6 @@ def get_result_char(result_file_name)
     result_file_lines = result_file.readlines
     if result_file_lines.length>=3
       current_run_score = result_file_lines[1].to_i
-      run_comment += result_file_lines[0]
       return char_comment(result_file_lines[0].chomp)
     else
       return RUN_ERROR_MARK
