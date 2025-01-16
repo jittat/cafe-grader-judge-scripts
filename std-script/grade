@@ -64,7 +64,7 @@ max_runtime = -1
   run_comment_short = ''
   run.tests.each do |test_num|
     result_file_name = "#{test_num}/result"
-    if not File.exists?(result_file_name)
+    if not File.exist?(result_file_name)
       run_comment += "result file for test #{test_num} not found\n"
       run_comment_short += RUN_ERROR_MARK
       log "Cannot find the file #{test_num}/result!"

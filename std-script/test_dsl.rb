@@ -82,7 +82,7 @@ class Problem < DSLNode
 
   def read_test(index)
     filename = ENV['PROBLEM_HOME'] + "/test_cases/#{index}/test.cfg"
-    if File.exists?(filename)
+    if File.exist?(filename)
       @tests[index] ||= Test.new
       content = File.read(filename)
       @tests[index].instance_eval content

@@ -104,7 +104,7 @@ def count_testruns(testcase_dir, raw_prefix)
 end
 
 def create_dir_if_not_exists(dir, options = {} )
-  if ! FileTest.exists? dir
+  if ! FileTest.exist? dir
     FileUtils.mkdir(dir)
   end
 
@@ -114,7 +114,7 @@ end
 def import_problem(ev_dir, problem, testcase_dir, num_testruns, raw_prefix, check_script, options)
   testrun_info = build_testrun_info_from_dir(num_testruns, testcase_dir, raw_prefix)
 
-  if !(FileTest.exists? ev_dir)
+  if !(FileTest.exist? ev_dir)
     puts "Testdata dir (#{ev_dir}) not found."
     return
   end
@@ -183,7 +183,7 @@ def import_problem(ev_dir, problem, testcase_dir, num_testruns, raw_prefix, chec
 
     FileUtils.cp("#{check_script_fname}", "#{problem_dir}/script/#{script_name}")
   else
-    if File.exists?(SCRIPT_DIR + "/templates/check.#{check_script}")
+    if File.exist?(SCRIPT_DIR + "/templates/check.#{check_script}")
       check_script_fname = SCRIPT_DIR + "/templates/check.#{check_script}"
     else
       check_script_fname = check_script

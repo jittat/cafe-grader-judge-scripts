@@ -95,7 +95,7 @@ mem_limit = problem.get_mem_limit(test_num) * 1024
 #`cp #{problem_home}/test_cases/#{test_num}/#{input_file_name} .`
 
 # check if box is there, if not, compile it!
-if !File.exists?("#{problem_home}/script/box")
+if !File.exist?("#{problem_home}/script/box")
   log "WARNING: Compiling box: to increase efficiency, it should be compile manually"
   compile_box("#{problem_home}/script/box.cc",
               "#{problem_home}/script/box")

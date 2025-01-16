@@ -72,15 +72,15 @@ end
 talk "COMPILE: working dir = " + Dir.pwd
 
 # Remove any remaining output files or message files.
-if FileTest.exists? params[:output_file]
+if FileTest.exist? params[:output_file]
   FileUtils.rm(params[:output_file])
 end
-if FileTest.exists? params[:message_file]
+if FileTest.exist? params[:message_file]
   FileUtils.rm(params[:message_file])
 end
 
 # Check if the source file exists before attempt compiling.
-if !FileTest.exists? params[:source_file]
+if !FileTest.exist? params[:source_file]
   talk("COMPILE: ERROR: The source file does not exist!")
   open(params[:message_file],"w") do |f|
     f.puts "ERROR: The source file did not exist."
@@ -133,7 +133,7 @@ when "java"
   command = "#{JAVA_COMPILER} -encoding utf8 #{classname}.java"
   talk "COMPILE: compiling command [#{command}]"
   system(command, err: params[:message_file])
-  if File.exists?(classname + ".class")
+  if File.exist?(classname + ".class")
     File.open(params[:output_file],"w") {|file| file.write("#{classname}")}
   end
   if classname == 'DUMMY'
@@ -160,7 +160,7 @@ when "python"
     command = "#{PYTHON_INTERPRETER} -c \"import py_compile; py_compile.compile('#{params[:source_file]}','#{params[:source_file]}c');\""
     talk "COMPILE: compiling command [#{command}]"
     system(command, err: params[:message_file])
-    if FileTest.exists?("#{params[:source_file]}c")
+    if FileTest.exist?("#{params[:source_file]}c")
       File.open(params[:output_file],"w") do |out_file|
         out_file.puts "#!#{PYTHON_INTERPRETER} #{params[:source_file]}c"
       end
@@ -195,7 +195,7 @@ else
 end
 
 # Report success or failure.
-if FileTest.exists? params[:output_file]
+if FileTest.exist? params[:output_file]
   talk "COMPILE: Compilation was successful!"
 else
   talk "COMPILE: ERROR: Something was wrong during the compilation!"

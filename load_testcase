@@ -44,7 +44,7 @@ def process_problem(prob,dry_run = false)
   loop do
     file_root = testcases_root + "/#{num}/"
     puts "  checking file #{file_root}"
-    break unless File.exists? file_root
+    break unless File.exist? file_root
     input = File.read(file_root + "/input-#{num}.txt")
     answer = File.read(file_root + "/answer-#{num}.txt")
     #we also remove carraige return

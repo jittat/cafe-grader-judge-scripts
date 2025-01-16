@@ -24,7 +24,7 @@ def config
 end
 
 def log_file_name
-  if !File.exists?(config.log_dir)
+  if !File.exist?(config.log_dir)
     raise "Log directory does not exist: #{config.log_dir}"
   end
   config.log_dir + 

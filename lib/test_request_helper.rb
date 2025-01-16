@@ -44,7 +44,7 @@ module Grader
       # The program would see this file only if it is copied
       #    to the sandbox directory later.  The run script should do it.
       #
-      if FileTest.exists?("#{test_request.input_file_name}.files")
+      if FileTest.exist?("#{test_request.input_file_name}.files")
         FileUtils.cp_r("#{test_request.input_file_name}.files/.",
                        "#{grading_room}")
       end
@@ -57,7 +57,7 @@ module Grader
 
       template_dir = "#{@config.test_request_problem_templates_dir}/" + problem_name
 
-      raise "Test Request: error template not found" if !File.exists?(template_dir)
+      raise "Test Request: error template not found" if !File.exist?(template_dir)
       
       problem_home = problem_home_dir(test_request)
       FileUtils.mkdir_p(problem_home)
@@ -106,12 +106,12 @@ module Grader
 
     def link_input_file(test_request, problem_home)
       input_fname = "#{test_request.input_file_name}"
-      if !File.exists?(input_fname)
+      if !File.exist?(input_fname)
         raise "Test Request: input file not found."
       end
 
       input_fname_problem_home = "#{problem_home}/test_cases/1/input-1.txt"
-      if File.exists?(input_fname_problem_home)
+      if File.exist?(input_fname_problem_home)
         FileUtils.rm([input_fname_problem_home], :force => true)
       end
 
@@ -119,7 +119,7 @@ module Grader
     end
     
     def remove_data_files(problem_home)
-      if File.exists?("#{problem_home}/test_cases/1/input-1.txt")
+      if File.exist?("#{problem_home}/test_cases/1/input-1.txt")
         Grader::call_and_log("Test Request: cannot remove data files") {
           FileUtils.rm Dir.glob("#{problem_home}/test_cases/1/*")
         }
@@ -156,7 +156,7 @@ module Grader
       
       result_file_name = "#{test_result_dir}/1/result"
 
-      if File.exists?(result_file_name)
+      if File.exist?(result_file_name)
         output_file_name = "#{test_result_dir}/1/output.txt"
         results = []
         File.open("#{test_result_dir}/1/result") do |f|
@@ -245,7 +245,7 @@ module Grader
       begin
         tmpname =  "#{@config.test_request_output_base_dir}" +
           "/#{user.login}/#{problem_name}/#{rand(10000)}"
-      end while File.exists?(tmpname)
+      end while File.exist?(tmpname)
       tmpname
     end
 

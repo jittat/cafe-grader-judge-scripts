@@ -132,6 +132,59 @@ if problem.well_formed? == false
   exit(127)
 end
 
+runskiped = {}
+runmap = {}
+mcount = {}
+(1..(problem.runs.length-1)).each do |k|
+  run = problem.runs[k]
+  run.tests.each do |test_num|
+    runmap[test_num] = k
+
+    if mcount.has_key? test_num
+      mcount[test_num] += 1
+    else
+      mcount[test_num] = 1
+    end
+  end
+  runskiped[k] = false
+end
+
+CORRECT_MARK = 'P'
+INCORRECT_MARK = '-'
+TIMEOUT_MARK = 'T'
+RUN_ERROR_MARK = 'x'
+
+def char_comment(comment)
+  if comment =~ /[Ii]ncorrect/
+    INCORRECT_MARK
+  elsif comment =~ /[Cc]orrect/
+    CORRECT_MARK
+  elsif comment =~ /[Tt]ime/
+    TIMEOUT_MARK
+  elsif res = /^[Cc]omment:(.*)$/.match(comment)
+    res[1]
+  else
+    RUN_ERROR_MARK  # these are run time errors
+  end
+end
+
+
+def get_result_char(result_file_name)
+  if not File.exist?(result_file_name)
+    return RUN_ERROR_MARK
+  else
+    result_file = File.new(result_file_name, "r")
+    result_file_lines = result_file.readlines
+    if result_file_lines.length>=3
+      current_run_score = result_file_lines[1].to_i
+      run_comment += result_file_lines[0]
+      return char_comment(result_file_lines[0].chomp)
+    else
+      return RUN_ERROR_MARK
+    end
+  end
+end
+
 # Doing the testing.
 log
 log "JUDGE: Running each test case..."
@@ -158,6 +211,7 @@ log "JUDGE: Running each test case..."
     # do nothing
   end
 
+  result_char = get_result_char("#{sandbox_dir}/result")
 
   #copy the output of run script to each test-result folder
   call_and_log("Cannot create directory #{test_result_dir}/#{test_num}") {
@@ -175,6 +229,13 @@ log "JUDGE: Running each test case..."
   call_and_log("Cannot clear #{sandbox_dir}") {
     FileUtils.rm_rf(Dir.glob("#{sandbox_dir}/*"), :secure => true)
   }
+
+  if result_char == 'T'
+    if mcount[test_num] == 1
+      runskiped[runmap[test_num]] = true
+      log "SHOULD SKIP #{runmap[test_num]}"
+    end
+  end
 end
 
 $stdout.print "[done]\n"

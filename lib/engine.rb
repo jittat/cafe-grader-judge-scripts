@@ -130,7 +130,7 @@ module Grader
       script_name = "#{problem_home}/script/judge"
       cmd = "#{script_name} #{language} #{fname}"
       talk "ENGINE: Calling Judge at #{cmd}"
-      warn "ERROR: file does not exists #{script_name}" unless File.exists? script_name
+      warn "ERROR: file does not exists #{script_name}" unless File.exist? script_name
       system(cmd)
     end
 
